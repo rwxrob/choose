@@ -23,12 +23,16 @@ type Choices[T any] []T
 
 // Choose prompts terminal user to pick from one of the choices.
 func (c Choices[T]) Choose() (T, error) {
+	var empty T
 	for i, v := range c {
 		fmt.Printf("%v. %v\n", i+1, v)
 	}
 	for {
 		fmt.Print(DefaultPrompt)
 		resp := readline()
+		if resp == "q" {
+			return empty, nil
+		}
 		n, _ := strconv.Atoi(resp)
 		if 0 < n && n < len(c)+1 {
 			return c[n-1], nil

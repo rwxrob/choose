@@ -26,8 +26,9 @@ type Choices[T any] []T
 // error.
 func (c Choices[T]) Choose() (int, T, error) {
 	var empty T
+	width := strconv.Itoa(len(strconv.Itoa(len(c) + 1)))
 	for i, v := range c {
-		fmt.Printf("%v. %v\n", i+1, v)
+		fmt.Printf("%"+width+"v. %v\n", i+1, v)
 	}
 	for {
 		fmt.Print(DefaultPrompt)

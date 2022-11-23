@@ -21,8 +21,10 @@ type Chooser[T any] interface {
 
 type Choices[T any] []T
 
-// Choose prompts terminal user to pick from one of the choices.
-func (c Choices[T]) Choose() (T, error) {
+// Choose prompts terminal user to pick from one of the choices and
+// returns the index of the choice with the choice or an empty value and
+// error.
+func (c Choices[T]) Choose() (int, T, error) {
 	var empty T
 	for i, v := range c {
 		fmt.Printf("%v. %v\n", i+1, v)
@@ -31,17 +33,17 @@ func (c Choices[T]) Choose() (T, error) {
 		fmt.Print(DefaultPrompt)
 		resp := readline()
 		if resp == "q" {
-			return empty, nil
+			return -1, empty, nil
 		}
 		n, _ := strconv.Atoi(resp)
 		if 0 < n && n < len(c)+1 {
-			return c[n-1], nil
+			return n - 1, c[n-1], nil
 		}
 	}
 }
 
 // From prompts terminal user to pick from one of the choices using the
 // DefaultChooser.
-func From[T any](choices []T) (T, error) {
+func From[T any](choices []T) (int, T, error) {
 	return Choices[T](choices).Choose()
 }

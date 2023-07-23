@@ -53,7 +53,7 @@ var EntryChoices = []Entry{
 }
 
 func main() {
-	pick, err := choose.From(StringChoices)
+	_, pick, err := choose.From(StringChoices)
 	if err != nil {
 		log.Println(err)
 		os.Exit(1)
